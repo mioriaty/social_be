@@ -6,6 +6,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { Route } from '~/core/interfaces';
 import { Logger } from '~/core/utils';
+import { errorHandlerMiddleware } from '~/core/middleware';
 
 class App {
   public app: express.Application;
@@ -58,6 +59,10 @@ class App {
       this.app.use(morgan('dev'));
       this.app.use(cors({ credentials: true, origin: true }));
     }
+
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(errorHandlerMiddleware);
   }
 }
 
