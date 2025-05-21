@@ -19,14 +19,15 @@ class App {
 
     this.isProduction = process.env.NODE_ENV === 'production';
 
-    this.initializeRoutes(routes);
     this.connectToDatabase();
     this.initializeMiddleware();
+    this.initializeRoutes(routes);
+    this.initializeErrorMiddleware();
   }
 
   private initializeRoutes(routes: Route[]) {
     routes.forEach(route => {
-      this.app.use(route.path, route.router);
+      this.app.use('/', route.router);
     });
   }
 
@@ -54,14 +55,16 @@ class App {
       this.app.use(hpp());
       this.app.use(helmet());
       this.app.use(morgan('combined'));
-      this.app.use(cors({ credentials: true, origin: 'your.domain.com' }));
+      this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
     } else {
       this.app.use(morgan('dev'));
-      this.app.use(cors({ credentials: true, origin: true }));
+      this.app.use(cors({ origin: true, credentials: true }));
     }
-
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+  }
+
+  private initializeErrorMiddleware() {
     this.app.use(errorHandlerMiddleware);
   }
 }

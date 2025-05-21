@@ -1,12 +1,6 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
-export default class RegisterDTO {
-  @IsNotEmpty()
-  public first_name: string = '';
-
-  @IsNotEmpty()
-  public last_name: string = '';
-
+export default class LoginDTO {
   @IsNotEmpty()
   @IsEmail()
   public email: string = '';
@@ -17,10 +11,8 @@ export default class RegisterDTO {
   })
   public password: string = '';
 
-  constructor(model?: Partial<RegisterDTO>) {
+  constructor(model?: Partial<LoginDTO>) {
     if (model) {
-      this.first_name = model.first_name || this.first_name;
-      this.last_name = model.last_name || this.last_name;
       this.email = model.email || this.email;
       this.password = model.password || this.password;
     }

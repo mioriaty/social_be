@@ -1,5 +1,8 @@
 import { Router } from 'express';
 import { Route } from '~/core/interfaces';
+import { validationMiddleware } from '~/core/middleware';
+
+import RegisterDTO from '~/modules/users/dtos/register.dto';
 import UsersController from '~/modules/users/users.controller';
 
 class UserRoute implements Route {
@@ -12,7 +15,11 @@ class UserRoute implements Route {
   }
 
   private initializeRoutes(): void {
-    this.router.post(this.path, this.usersController.register);
+    this.router.post(
+      this.path,
+      validationMiddleware(RegisterDTO, true),
+      this.usersController.register
+    );
   }
 }
 

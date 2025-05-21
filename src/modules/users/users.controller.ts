@@ -7,6 +7,7 @@ class UsersController {
   private userService = new UsersService();
 
   public register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    console.log('req.body', req.body);
     try {
       const model: RegisterDTO = req.body;
       const tokenData = await this.userService.createUser(model);
